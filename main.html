@@ -1,16 +1,82 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+    <h1>Login Form</h1>
 
+    <form id="login-form">
+        <label for="username">Username: 
+            <input id="username" type="text" placeholder="Username">
+        </label>
+        <br><br>
+        <label for="password">Password: 
+            <input id="password" type="password" placeholder="Password">
+        </label>
+        <br><br>
+        <label for="checkbox">
+            <input id="checkbox" type="checkbox">
+            Remember me
+        </label>
+        <br><br>
+        <input id="submit" type="submit" value="Submit">
+    </form>
+
+    <!-- Button for existing users, hidden initially -->
+    <button id="existing" style="display: none;">Login as existing user</button>
+
+    <script>
+        const form = document.getElementById('login-form');
+        const existingBtn = document.getElementById('existing');
+
+        // Check if user details are already stored in localStorage
+        window.onload = function() {
+            const storedUsername = localStorage.getItem('username');
+            const storedPassword = localStorage.getItem('password');
+
+            if (storedUsername && storedPassword) {
+                existingBtn.style.display = 'inline';
+                existingBtn.onclick = function() {
+                    alert(`Logged in as ${storedUsername}`);
+                };
+            }
+        };
+
+        form.onsubmit = function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('checkbox').checked;
+
+            if (username && password) {
+                if (rememberMe) {
+                    // Save to localStorage
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('password', password);
+                } else {
+                    // Remove from localStorage if checkbox is unchecked
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('password');
+                }
+
+                alert(`Logged in as ${username}`);
+
+                // Check if existing button needs to be shown
+                if (rememberMe) {
+                    existingBtn.style.display = 'inline';
+                    existingBtn.onclick = function() {
+                        alert(`Logged in as ${username}`);
+                    };
+                }
+            } else {
+                alert('Please fill in both fields');
+            }
+        };
+    </script>
 </body>
-
 </html>
